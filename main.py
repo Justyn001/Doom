@@ -3,6 +3,7 @@ import sys
 from settings import *
 from map import *
 from player import *
+from RayCasting import *
 
 
 class Game:
@@ -15,12 +16,14 @@ class Game:
     def new_game(self):
         self.map = Map(self)
         self.player = Player(self)
+        self.ray_cast = RayCasting(self)
 
     def update(self):
         pg.display.flip()
         self.clock.tick(FPS)
         pg.display.set_caption(f"{int(self.clock.get_fps())}")
         self.player.movement()
+        self.ray_cast.update()
 
     def check_events(self):
         for event in pg.event.get():
@@ -34,9 +37,9 @@ class Game:
 
     def run(self):
         while True:
+            self.update()
             self.draw()
             self.check_events()
-            self.update()
 
 
 if __name__ == "__main__":
