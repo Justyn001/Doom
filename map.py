@@ -28,5 +28,8 @@ class Map:
                     self.world_map[(position, index)] = value
 
     def draw_map(self):
+        #self.game.screen.fill('black')
         for pos in self.world_map.keys():
             pg.draw.rect(self.game.screen, 'grey', (pos[0] * 100, pos[1] * 100, 100, 100), 2)
+
+

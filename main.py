@@ -23,7 +23,7 @@ class Game:
         self.clock.tick(FPS)
         pg.display.set_caption(f"{int(self.clock.get_fps())}")
         self.player.movement()
-        self.ray_cast.update()
+        #self.ray_cast.update()
 
     def check_events(self):
         for event in pg.event.get():
@@ -32,8 +32,10 @@ class Game:
                 sys.exit()
 
     def draw(self):
-        self.map.draw_map()
-        self.player.draw()
+        self.screen.fill("black")
+        self.ray_cast.update()
+        #self.map.draw_map()
+        #self.player.draw()
 
     def run(self):
         while True:
