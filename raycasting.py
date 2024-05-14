@@ -6,10 +6,29 @@ import math
 class RayCasting:
     def __init__(self, game):
         self.game = game
+        self.ray_casting_result = []
+        self.object_to_render = []
+        self.textures = self.game.object_renderer.wall_textures
+
+    def get_objects_to_render(self):
+        self.object_to_render = []
+        for ray, value in enumerate(self.ray_casting_result):
+            depth, proj_height, texture, offset = value
+
+            wall_column = self.textures[texture].subsurface(            # subsurface służy do przycinania powierzchni (surface) na podstawie określonych parametrów.
+                offset * (TEXTURE_SIZE - SCALE), 0, SCALE, TEXTURE_SIZE
+                )
+
+            wall_column = pg.transform.scale(wall_column, (SCALE, proj_height))
+            wall_pos = (ray * SCALE, HALF_LENGTH - proj_height // 2)
+            self.object_to_render.append((depth, wall_column, wall_pos))
 
     def ray_casting(self):
+        self.ray_casting_result = []
         x, y = self.game.player.pos()
         m_x, m_y = self.game.player.map_pos()
+
+        textures_hor, textures_ver = 1, 1
 
         start_angle = self.game.player.player_angle - HALF_POV + 0.0001
 
@@ -31,6 +50,7 @@ class RayCasting:
             for k in range(MAX_DEPTH):
                 actual_position_x = int(x_vert), int(y_vert)
                 if actual_position_x in self.game.map.world_map:
+                    textures_ver = self.game.map.world_map[actual_position_x]
                     break
                 x_vert += dx  # Przejscie z wartościami do następnego kwadratu
                 y_vert += dy
@@ -50,15 +70,26 @@ class RayCasting:
             for i in range(MAX_DEPTH):
                 actual_position_y = int(x_hor), int(y_hor)
                 if actual_position_y in self.game.map.world_map:
+                    textures_hor = self.game.map.world_map[actual_position_y]
                     break
                 x_hor += dx
                 y_hor += dy
                 depth_horizontal += delta_depth
 
             if depth_vert < depth_horizontal:
-                depth = depth_vert
+                depth, texture = depth_vert, textures_ver
+                y_vert %= 1
+                if cos_a > 0:
+                    offset = y_vert
+                else:
+                    offset = 1 - y_vert
             else:
-                depth = depth_horizontal
+                depth, texture = depth_horizontal, textures_hor
+                x_hor %= 1
+                if sin_a > 0:
+                    offset = 1 - x_hor
+                else:
+                    offset = x_hor
 
             # usuniecie 'fishbowl' effect
             depth *= math.cos(self.game.player.player_angle - start_angle)
@@ -66,10 +97,14 @@ class RayCasting:
             # pseudo 3d
             projected_height = SCREEN_DIST/(depth + 0.00001)
 
-            wall_colour = [255/(1 + depth ** 5 * 0.00002)] * 3
-            pg.draw.rect(self.game.screen, wall_colour,
-                         (ray * SCALE, HALF_LENGTH - projected_height//2, SCALE, projected_height))
+            self.ray_casting_result.append((depth, projected_height, texture, offset))
+
+            # wall_colour = [255/(1 + depth ** 5 * 0.00002)] * 3
+            # pg.draw.rect(self.game.screen, wall_colour,
+            #              (ray * SCALE, HALF_LENGTH - projected_height//2, SCALE, projected_height))
+
             start_angle += DELTA_ANGLE  # następny promień
 
     def update(self):
         self.ray_casting()
+        self.get_objects_to_render()

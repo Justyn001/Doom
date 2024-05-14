@@ -3,7 +3,8 @@ import sys
 from settings import *
 from map import *
 from player import *
-from RayCasting import *
+from raycasting import *
+from object_render import *
 
 
 class Game:
@@ -16,6 +17,7 @@ class Game:
     def new_game(self):
         self.map = Map(self)
         self.player = Player(self)
+        self.object_renderer = ObjectRenderer(self)
         self.ray_cast = RayCasting(self)
 
     def update(self):
@@ -23,7 +25,7 @@ class Game:
         self.clock.tick(FPS)
         pg.display.set_caption(f"{int(self.clock.get_fps())}")
         self.player.movement()
-        #self.ray_cast.update()
+        self.ray_cast.update()
 
     def check_events(self):
         for event in pg.event.get():
@@ -33,7 +35,8 @@ class Game:
 
     def draw(self):
         self.screen.fill("black")
-        self.ray_cast.update()
+        self.object_renderer.draw()
+        #self.ray_cast.update()
         #self.map.draw_map()
         #self.player.draw()
 

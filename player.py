@@ -59,10 +59,8 @@ class Player:
     def update(self):
         self.movement()
 
-
     def pos(self):
         return self.x, self.y
-
 
     def map_pos(self):
         return int(self.x), int(self.y)
