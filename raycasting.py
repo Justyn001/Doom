@@ -15,12 +15,22 @@ class RayCasting:
         for ray, value in enumerate(self.ray_casting_result):
             depth, proj_height, texture, offset = value
 
-            wall_column = self.textures[texture].subsurface(            # subsurface służy do przycinania powierzchni (surface) na podstawie określonych parametrów.
-                offset * (TEXTURE_SIZE - SCALE), 0, SCALE, TEXTURE_SIZE
-                )
+            if proj_height < LENGTH:                                    # Ten if jest gdy tekstura zajmuje mniej miejsca niz caly pov(nie tylko ta tekstura jest na ekranie)
 
-            wall_column = pg.transform.scale(wall_column, (SCALE, proj_height))
-            wall_pos = (ray * SCALE, HALF_LENGTH - proj_height // 2)
+                wall_column = self.textures[texture].subsurface(            # subsurface służy do przycinania powierzchni (surface) na podstawie określonych parametrów.
+                    offset * (TEXTURE_SIZE - SCALE), 0, SCALE, TEXTURE_SIZE
+                    )
+
+                wall_column = pg.transform.scale(wall_column, (SCALE, proj_height))
+                wall_pos = (ray * SCALE, HALF_LENGTH - proj_height // 2)
+
+            else:                                                      # Ten jest gdy tekstura jest zajmuje cale pov(tylko tektura jest na ekranie)
+                texture_height = TEXTURE_SIZE * LENGTH/proj_height
+                wall_column = self .textures[texture].subsurface(offset*(TEXTURE_SIZE - SCALE),
+                                                  HALF_TEXTURE_SIZE - texture_height//2, SCALE, texture_height)
+                wall_column = pg.transform.scale(wall_column, (SCALE, LENGTH))
+                wall_pos = (ray * SCALE, 0)
+
             self.object_to_render.append((depth, wall_column, wall_pos))
 
     def ray_casting(self):

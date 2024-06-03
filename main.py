@@ -10,6 +10,7 @@ from object_render import *
 class Game:
     def __init__(self):
         pg.init()
+        pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.new_game()
@@ -24,7 +25,7 @@ class Game:
         pg.display.flip()
         self.clock.tick(FPS)
         pg.display.set_caption(f"{int(self.clock.get_fps())}")
-        self.player.movement()
+        self.player.update()
         self.ray_cast.update()
 
     def check_events(self):
@@ -34,7 +35,7 @@ class Game:
                 sys.exit()
 
     def draw(self):
-        self.screen.fill("black")
+        #self.screen.fill("black")
         self.object_renderer.draw()
         #self.ray_cast.update()
         #self.map.draw_map()
