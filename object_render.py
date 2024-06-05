@@ -24,6 +24,7 @@ class ObjectRenderer:
         self.screen.blit(self.sky, (-self.sky_offset, 0))               # rysuje niebo przesunięte o -self.sky_offset w osi X i umieszczony na samej górze ekranu (y = 0).
         self.screen.blit(self.sky, (-self.sky_offset+WIDTH, 0))         # rysuje drugi obraz nieba, umieszczony tuż za pierwszym, zapewniając płynne przejście
         pg.draw.rect(self.screen, FLOOR_COLOR, (0, HALF_LENGTH, WIDTH, LENGTH))
+
     @staticmethod
     def get_texture(path, size=(TEXTURE_SIZE, TEXTURE_SIZE)):
         texture = pg.image.load(path).convert_alpha()

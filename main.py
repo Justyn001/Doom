@@ -5,7 +5,8 @@ from map import *
 from player import *
 from raycasting import *
 from object_render import *
-
+from weapon import *
+from sounds import *
 
 class Game:
     def __init__(self):
@@ -20,6 +21,8 @@ class Game:
         self.player = Player(self)
         self.object_renderer = ObjectRenderer(self)
         self.ray_cast = RayCasting(self)
+        self.weapon = Weapon(self)
+        self.music = Sounds(self)
 
     def update(self):
         pg.display.flip()
@@ -27,16 +30,21 @@ class Game:
         pg.display.set_caption(f"{int(self.clock.get_fps())}")
         self.player.update()
         self.ray_cast.update()
+        self.weapon.update()
 
     def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
+            if event.type == pg.MOUSEBUTTONDOWN and self.weapon.shooting == False:
+                self.weapon.shoot()
+                self.music.shotgun_sounds()
 
     def draw(self):
         #self.screen.fill("black")
         self.object_renderer.draw()
+        self.weapon.draw_weapon()
         #self.ray_cast.update()
         #self.map.draw_map()
         #self.player.draw()

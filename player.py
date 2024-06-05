@@ -68,12 +68,12 @@ class Player:
         if self.check_wall_collision(int(self.x), int(self.y + dy * scale)):
             self.y += dy
 
-    def draw(self):
-        pg.draw.circle(self.game.screen, 'red',
-                       (self.x * 100, self.y * 100), 15)
-        pg.draw.line(self.game.screen, 'red', (self.x * 100, self.y * 100),
-                     (self.x * 100 + WIDTH*math.cos(self.player_angle),
-                      self.y * 100 + WIDTH * math.sin(self.player_angle)))
+    # def draw(self):
+    #     pg.draw.circle(self.game.screen, 'red',
+    #                    (self.x * 100, self.y * 100), 15)
+    #     pg.draw.line(self.game.screen, 'red', (self.x * 100, self.y * 100),
+    #                  (self.x * 100 + WIDTH*math.cos(self.player_angle),
+    #                   self.y * 100 + WIDTH * math.sin(self.player_angle)))
 
     def mouse_control(self):
         mx, my = pg.mouse.get_pos()
