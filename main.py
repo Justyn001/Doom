@@ -7,6 +7,8 @@ from raycasting import *
 from object_render import *
 from weapon import *
 from sounds import *
+from enemy import *
+
 
 class Game:
     def __init__(self):
@@ -15,6 +17,7 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.new_game()
+        self.music.theme()
 
     def new_game(self):
         self.map = Map(self)
@@ -24,6 +27,9 @@ class Game:
         self.weapon = Weapon(self)
         self.music = Sounds(self)
 
+        self.enemy = Enemy(self)
+
+
     def update(self):
         pg.display.flip()
         self.clock.tick(FPS)
@@ -32,12 +38,15 @@ class Game:
         self.ray_cast.update()
         self.weapon.update()
 
+        self.enemy.update()
+
+
     def check_events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
-            if event.type == pg.MOUSEBUTTONDOWN and self.weapon.shooting == False:
+            if event.type == pg.MOUSEBUTTONDOWN and self.weapon.shooting is False:
                 self.weapon.shoot()
                 self.music.shotgun_sounds()
 
@@ -48,6 +57,7 @@ class Game:
         #self.ray_cast.update()
         #self.map.draw_map()
         #self.player.draw()
+
 
     def run(self):
         while True:

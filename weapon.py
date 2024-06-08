@@ -12,9 +12,9 @@ class Weapon:
         self.shooting = False
 
     def animate_shot(self):
-        now = pg.time.get_ticks()
-        if now - self.last_shot_time > self.animation_time:
-            self.image_index = (self.image_index + 1) % len(self.images)
+        now = pg.time.get_ticks()       # czas od uruchomienia gry
+        if now - self.last_shot_time > self.animation_time: # Jeśli czas trwania animacji jest większy niz 140 to wchodzi do petli
+            self.image_index = (self.image_index + 1) % len(self.images)    # modulo tu jest by index szedl od zera jak dojdzie do 5
             self.last_shot_time = now
             if self.image_index == 0:  # Jeśli animacja się zakończyła
                 self.shooting = False
