@@ -1,4 +1,5 @@
 import pygame as pg
+from enemy import *
 from settings import *
 
 
@@ -24,6 +25,7 @@ class Weapon:
         self.image_index = 0
         self.last_shot_time = pg.time.get_ticks()
         print("pifpaf")
+        self.check_hit_in_npc()
 
     def draw_weapon(self):
         weapon_image = self.images[self.image_index]
@@ -31,6 +33,12 @@ class Weapon:
         weapon_rect = weapon_image.get_rect(midbottom=(800, 900))
         self.game.screen.blit(weapon_image, weapon_rect)
 
+    def check_hit_in_npc(self):
+        if HALF_WIDTH - self.game.enemy.sprite_half_width < self.game.enemy.screen_x < HALF_WIDTH + self.game.enemy.sprite_half_width:
+            self.game.music.play_hit_sound()
+            self.game.enemy.image = pg.image.load("npc/profil/death.png").convert_alpha()
+
     def update(self):
         if self.shooting:
             self.animate_shot()
+

@@ -31,13 +31,13 @@ class Enemy:
             self.get_sprite_projection()
 
     def get_sprite_projection(self):
-        proj = SCREEN_DIST / self.norm_dist
-        proj_width, proj_height = proj * self.IMAGE_RATIO, proj
+        proj = SCREEN_DIST / self.norm_dist * 0.80                   # wynik który będzie używany do skalowania sprite'a w pionie i poziomie.
+        proj_width, proj_height = proj * self.IMAGE_RATIO, proj * 1.1 # proj_width - szerokosc sprite po projekcji, proj_height - wysokosc sprite po projekcji
 
-        image = pg.transform.scale(self.image, (proj_width, proj_height))
+        image = pg.transform.scale(self.image, (proj_width, proj_height))       # skaluje sprite do nowych rozmaiarow
 
-        self.sprite_half_width = proj_width // 2
-        pos = self.screen_x - self.sprite_half_width, HALF_LENGTH - proj_height // 2
+        self.sprite_half_width = proj_width // 2            # polowa szerokosci sprita uzywana do wycentrowania obrazu na ekranie
+        pos = self.screen_x - self.sprite_half_width, HALF_LENGTH - proj_height // 2    # pozycja sprite
 
         self.game.ray_cast.object_to_render.append((self.norm_dist, image, pos))
 

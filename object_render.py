@@ -15,9 +15,9 @@ class ObjectRenderer:
         self.render_game_object()
 
     def render_game_object(self):
-        list_object = self.game.ray_cast.object_to_render
-        for depth, texture, position in list_object:
-            self.screen.blit(texture, position)
+        list_objects = sorted(self.game.ray_cast.object_to_render, key=lambda t: t[0], reverse=True)        # sortowanie po depth
+        for depth, image, pos in list_objects:
+            self.screen.blit(image, pos)
 
     def render_background(self):
         self.sky_offset = (self.sky_offset + 4.5 *self.game.player.rel) % WIDTH     # 4.5 to stała, która kontroluje prędkość przesuwania tła nieba
