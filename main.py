@@ -28,6 +28,7 @@ class Game:
         self.music = Sounds(self)
 
         self.enemy = Enemy(self)
+        self.enemy2 = Enemy(self, path="npc/profil/0.png", pos=(5, 5))
 
 
     def update(self):
@@ -39,6 +40,7 @@ class Game:
         self.weapon.update()
 
         self.enemy.update()
+        self.enemy2.update()
 
 
     def check_events(self):

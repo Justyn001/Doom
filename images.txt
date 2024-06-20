@@ -1,0 +1,6 @@
+shoot_images/0.png
+shoot_images/1.png
+shoot_images/2.png
+shoot_images/3.png
+shoot_images/4.png
+shoot_images/5.png

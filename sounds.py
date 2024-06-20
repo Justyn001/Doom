@@ -1,6 +1,6 @@
 import pygame as pg
 import pygame.mixer
-
+import threading
 
 class Sounds:
     def __init__(self, game):
@@ -12,6 +12,9 @@ class Sounds:
     def shotgun_sounds(self):
         self.shotgun_sound.set_volume(0.2)
         self.shotgun_sound.play()
+
+    def theme(self):
+        threading.Thread(target=self._play_theme).start()
 
     def theme(self):
         self.theme_song.set_volume(0.1)    #0.15

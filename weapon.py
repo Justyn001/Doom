@@ -1,4 +1,5 @@
 import pygame as pg
+import re
 from enemy import *
 from settings import *
 
@@ -6,10 +7,14 @@ from settings import *
 class Weapon:
     def __init__(self, game):
         self.game = game
-        self.images = [pg.image.load(f'shoot_images/{i}.png').convert_alpha() for i in range(5)]
+        f = open('images.txt')
+        files = [str(f.readline().strip()) for i in range(5)]
+        png_files = [file for file in files if re.match(r'.*\.png$', file)]
+        self.images = [pg.image.load(file).convert_alpha() for file in png_files]
         self.image_index = 0
         self.animation_time = 140  # czas trwania jednej klatki animacji w milisekundach
         self.last_shot_time = pg.time.get_ticks()
+        f.close()
         self.shooting = False
 
     def animate_shot(self):
